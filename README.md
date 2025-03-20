@@ -10,7 +10,7 @@ coverY: 0
 
 Welcome to my penetration testing notes page - a project started with the idea to share and document my knowledge gained in the world of offensive security.
 
-My current knowledge comes from CTFs, real world penetration testing, but also from studying for certifications such as the OSCP, CPTS, eWPTv2 and eJPT.
+My current knowledge comes from CTFs, eJPT and currently CPTS certification.
 
 ***
 
