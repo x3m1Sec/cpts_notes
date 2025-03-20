@@ -16,14 +16,6 @@ My current knowledge comes from CTFs, real world penetration testing, but also f
 
 ## **About me**
 
-<details>
-
-<summary>My Profiles</summary>
-
-
-</details>
-
-
 
 ***
 
