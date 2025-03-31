@@ -72,4 +72,6 @@
     * [Pivoting, Tunneling, Port Forwarding](pentest-notes/utilities-scripts-and-payloads/pivoting-tunneling-port-forwarding.md)
     * [Password Attacks](pentest-notes/utilities-scripts-and-payloads/password-attacks.md)
 * [🎓 My Certifications](my-certifications/README.md)
-  * [eJPTv2](my-certifications/ejptv2.md)
+  * [eJPTv2](my-certifications/ejpt/ejptv2.md)
+  * [CPTS](my-certifications/CPTS/README.md)
+    * [CheatSheet](my-certifications/CPTS/cheatsheet.md)
