@@ -73,6 +73,6 @@
     * [Password Attacks](pentest-notes/utilities-scripts-and-payloads/password-attacks.md)
 * [🎓 My Certifications](my-certifications/README.md)
   * [eJPTv2](my-certifications/ejpt/README.md)
-    * [My review](my-certifications/CPTS/ejptv2.md)
+    * [My review](my-certifications/eJPT/ejptv2.md)
   * [CPTS](my-certifications/CPTS/README.md)
     * [CheatSheet](my-certifications/CPTS/cheatsheet.md)
