@@ -14,7 +14,7 @@ This section documents the professional certifications I've earned throughout my
 
 I'm continuously working to expand my knowledge and credentials in the cybersecurity field. Here's my planned certification path for the near future:
 
-1. **CPTS** (Certified Penetration Testing Specialist)
+1. **CPTS** (Certified Penetration Testing Specialist) - Currently studying..
    - **Issuing Organization**: Hack The Box
    - **Focus**: Advanced penetration testing methodologies and techniques
    - **Key Areas**: Web application security, Active Directory, pivoting, post-exploitation

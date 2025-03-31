@@ -12,10 +12,13 @@
 - [Resources That Helped Me Succeed](#resources-that-helped-me-succeed)
   - [Cheatsheets](#cheatsheets)
   - [Note-Taking Template](#note-taking-template)
+ 
+![image](https://github.com/user-attachments/assets/8317ddc1-12bd-4bd5-896a-96d60b96c450)
+
 
 ## What is eJPTv2?
 
-The eJPTv2 (eLearn Security Junior Penetration Tester version 2) is an entry-level penetration testing certification offered by INE at a cost of $250, though discounts are occasionally available. Upon purchase, you receive two exam attempts valid for 90 days.
+The eJPTv2 (eLearn Security Junior Penetration Tester version 2) is an entry-level penetration testing certification offered by INE at a cost of 200€, though discounts are occasionally available. Upon purchase, you receive two exam attempts valid for 90 days.
 
 This is a 100% practical, dynamic exam where you gain access to a virtual machine to perform a real penetration test. According to INE, this exam validates the knowledge and skills necessary to work as a junior penetration tester.
 
@@ -27,7 +30,7 @@ The certification recognizes skills in the following areas:
 - Metasploit exploitation
 - Information gathering
 
-The exam consists of 35 questions to be answered within 48 hours, with a 70% passing score required. Some questions have dynamic answers that may change if you restart the virtual machine, so I recommend answering these questions immediately when you find them to avoid complications.
+The exam consists of 35 questions to be answered within 48 hours, with a 70% passing score required. Some questions have dynamic answers that may change if you restart the virtual machine, so I recommend answering these questions immediately when you find them to avoid complications.During the exam you have to compromise several machines, perform pivoting and privilege escalation techniques to get the flags of the different systems and also be able to answer the questions posed.
 
 ## My Preparation Journey
 
@@ -41,36 +44,36 @@ The course is divided into four modules:
 3. **Host and Network Penetration Testing** - Exploiting known vulnerabilities in Windows and Linux, including Eternal Blue, WebDAV with Metasploit, SMB with PsExec, WinRM, and more.
 4. **Web Application Penetration Testing** - Exploiting web vulnerabilities like SQL injection, XSS, and attacks on login pages.
 
-Despite having experience with HTB machines, I found the course content easy to consume. The documentation on commands and tools proved very useful during the exam and helped me master the fundamentals of hacking that will make a difference in the long term.
+Despite having experience with HTB machines, I found the course content easy to consume. The documentation on commands and tools proved very useful during the exam and helped me master the fundamentals of hacking that will make a difference in the long term. It took me about a month and a half to 2 months to finish the course while combining it with my current job.
 
 ### Additional Practice with CTF Labs
 
 To expand my knowledge, I also practiced with various Capture The Flag (CTF) labs from platforms like:
 
 **TryHackMe machines:**
-- Blue
-- Ice
-- Blaster
-- Pentesting Fundamentals
-- Ignite
-- Blog
-- Startup
-- Chill Hack
-- Bolt
-- VulnNet: Internal
-- ColddBox: Easy
+- [Blue](https://tryhackme.com/room/blue)
+- [Ice](https://tryhackme.com/room/ice)
+- [Blaster](https://tryhackme.com/room/blaster)
+- [Pentesting Fundamentals](https://tryhackme.com/room/pentestingfundamentals)
+- [Ignite](https://tryhackme.com/room/ignite)
+- [Blog](https://tryhackme.com/room/blog)
+- [Startup](https://tryhackme.com/room/startup)
+- [Chill Hack](https://tryhackme.com/room/chillhack)
+- [Bolt](https://tryhackme.com/room/bolt)
+- [VulnNet Internal](https://tryhackme.com/room/vulnnet1)
+- [ColddBox Easy](https://tryhackme.com/room/colddboxeasy?ref=blog.razrsec.uk)
 
 **HackTheBox machines:**
-- Union
-- Validation
-- Return
-- Goodgames
+- [Union](https://www.hackthebox.com/machines/union)
+- [Validation](https://www.hackthebox.com/machines/validation)
+- [Return](https://www.hackthebox.com/machines/return)
+- [Goodgames](https://www.hackthebox.com/machines/goodgames)
 
 **VulnHub machines:**
-- Dark Hole 1
-- Dark Hole 2
-- Symfonos 1
-- Election 1
+- [Dark Hole 1](https://www.vulnhub.com/entry/darkhole-1,724)
+- [Dark Hole 2](https://www.vulnhub.com/entry/darkhole-2,740)
+- [Symfonos 1](https://www.vulnhub.com/entry/symfonos-1,322)
+- [Election 1](https://www.vulnhub.com/entry/election-1,503)
 
 ## The Exam Experience
 
