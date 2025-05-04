@@ -1,5 +1,6 @@
 
-![[Pasted image 20250504113659.png]]
+![](assets/Pasted%20image%2020250504113659.png)
+
 
 
 **Publicado:** 04 de Mayo de 2025 
