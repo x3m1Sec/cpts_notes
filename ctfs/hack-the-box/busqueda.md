@@ -3,9 +3,10 @@
 
 
 
-**Publicado:** 04 de Mayo de 2025 
-**Autor:** José Miguel Romero aka x3m1Sec 
+**Publicado:** 04 de Mayo de 2025  
+**Autor:** José Miguel Romero aka x3m1Sec  
 **Dificultad:** ⭐ Fácil
+
 
 ---
 
