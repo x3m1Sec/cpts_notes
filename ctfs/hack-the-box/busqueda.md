@@ -114,7 +114,8 @@ Realizando fuzzing de vhosts descrubirmos un vhost llamado gitea que añadimos t
 ffuf -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt:FUZZ -u http://searcher.htb -H 'Host:FUZZ.searcher.htb' -fc 302
 ```
 
-![[Pasted image 20250503112323.png]]
+
+![](assets/Pasted%20image%2020250503112323.png)
 
 ```bash
 echo "10.10.11.208 gitea.searcher.htb" | sudo tee -a /etc/hosts
@@ -125,7 +126,8 @@ echo "10.10.11.208 gitea.searcher.htb" | sudo tee -a /etc/hosts
 En el pie de página, se revela que la aplicación usa **Searchor v2.4.0**. Una investigación rápida muestra que esta versión es vulnerable a ejecución de código arbitrario y un exploit público:
 
 https://github.com/nikn0laty/Exploit-for-Searchor-2.4.0-Arbitrary-CMD-Injection
-![[Pasted image 20250504114337.png]]
+
+![](assets/Pasted%20image%2020250504114337.png)
 
 El problema radica en el uso inseguro de la función `eval()` de Python.
 
@@ -165,7 +167,7 @@ Ejecutamos el exploit indicando la URL del objetivo y nuestra IP y puerto del ho
 ```
 
 
-![[Pasted image 20250503115515.png]]
+![](assets/Pasted%20image%2020250503115515.png)
 
 Esto mismo se podría hacer también usando el siguiente payload interceptando la petición con la herramienta Burp Suite:
 
