@@ -106,7 +106,7 @@ echo "10.10.11.208 searcher.htb" | sudo tee -a /etc/hosts
 
 Al acceder a la web, descubrimos un motor de búsqueda unificado que genera URLs de consulta para varios motores de búsqueda.
 
-![[Pasted image 20250504114108.png]]
+![](assets/Pasted%20image%2020250504114108.png)
 
 Realizando fuzzing de vhosts descrubirmos un vhost llamado gitea que añadimos también a nuestro fichero /etc/hosts
 
@@ -256,6 +256,8 @@ Descubrimos que el usuario svc no tiene permisos de escritura ni lectura pero po
 
 ![[Pasted image 20250503123807.png]]
 
+![](assets/Pasted%20image%2020250503123807.png)
+
 ```bash
 svc@busqueda:~$ sudo /usr/bin/python3 /opt/scripts/system-checkup.py *
 Usage: /opt/scripts/system-checkup.py <action> (arg1) (arg2)
@@ -271,7 +273,7 @@ Uso del parámetro **docker-ps** del script `system-checkup.py`
 sudo /usr/bin/python3 /opt/scripts/system-checkup.py docker-ps
 ```
 
-![[Pasted image 20250503124327.png]]
+![](assets/Pasted%20image%2020250503124327.png)
 
 Uso del parámetro **docker-inspect** del script `system-checkup.py`
 
@@ -279,7 +281,7 @@ Uso del parámetro **docker-inspect** del script `system-checkup.py`
 sudo /usr/bin/python3 /opt/scripts/system-checkup.py docker-inspect
 ```
 
-![[Pasted image 20250503124405.png]]
+![](assets/Pasted%20image%2020250503124405.png)
 
 
 Podemos obtener más información sobre el parámetro `<format>`en la siguiente documentación de docker
@@ -326,11 +328,12 @@ sudo /usr/bin/python3 /opt/scripts/system-checkup.py docker-inspect '{{json .}}'
 
 Esta contraseña nos permite autenticarnos en el vhost http://gitea.searcher.htb como usuario Administrator y acceder al repositorio de script, pudiendo de esta forma analizar su contenido:
 
-![[Pasted image 20250504111131.png]]
+![](assets/Pasted%20image%2020250504111131.png)
 
 Al revisar el script comprobamos que si pasamos como argumento la opción "full-checkup" ejecuta el script ./full-checkup.sh:
 
-![[Pasted image 20250504111238.png]]
+
+![](assets/Pasted%20image%2020250503123628.png)
 
 ### Explotación del script
 
@@ -360,7 +363,7 @@ Por útimo, lanzamos de nuevo el script desde el directorio /tmp para que abusan
 sudo /usr/bin/python3 /opt/scripts/system-checkup.py full-checkup
 ```
 
-![[Pasted image 20250504120405.png]]
+![](assets/Pasted%20image%2020250504120405.png)
 
 
 ### Flag de root
