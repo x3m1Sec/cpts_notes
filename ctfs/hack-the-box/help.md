@@ -7,6 +7,9 @@
 
 ## 📝 Descripción
 
+Help" es una máquina Linux de dificultad fácil en HackTheBox que presenta una aplicación web vulnerable de mesa de ayuda (HelpDeskZ) y una API GraphQL. La explotación implica múltiples vectores: enumeración web, extracción de credenciales a través de GraphQL, explotación de SQLi en la aplicación web para obtener más credenciales, y finalmente una escalada de privilegios aprovechando una vulnerabilidad en el kernel de Linux.
+
+La máquina es particularmente útil para practicar técnicas de reconocimiento web, manipulación de APIs GraphQL, explotación de SQL Injection y escalada de privilegios mediante vulnerabilidades de kernel.
 
 ## 🚀 Metodología
 ![image](https://github.com/user-attachments/assets/54628e7d-b5dc-46d9-8f53-f34d9ebcf934)
