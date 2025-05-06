@@ -12,7 +12,23 @@ Help" es una máquina Linux de dificultad fácil en HackTheBox que presenta una 
 La máquina es particularmente útil para practicar técnicas de reconocimiento web, manipulación de APIs GraphQL, explotación de SQL Injection y escalada de privilegios mediante vulnerabilidades de kernel.
 
 ## 🚀 Metodología
-![image](https://github.com/user-attachments/assets/54628e7d-b5dc-46d9-8f53-f34d9ebcf934)
+```mermaid
+graph TD
+    A[Reconocimiento] --> B[Escaneo: Puertos 22, 80, 3000]
+    B --> C[Puerto 80: HelpDeskZ v1.0.2]
+    B --> D[Puerto 3000: GraphQL API]
+    D --> E[Explotación GraphQL]
+    E --> F[Obtención credenciales: helpme:Welcome1]
+    C --> G[Enumeración HelpDeskZ]
+    G --> H[Descubrimiento vulnerabilidad SQLi]
+    H --> I[Explotación SQLi]
+    I --> J[Obtención credenciales: help:Welcome1]
+    J --> K[Acceso SSH como usuario help]
+    K --> L[Enumeración sistema]
+    L --> M[Kernel vulnerable: 4.4.0-116]
+    M --> N[Explotación CVE-2017-16995]
+    N --> O[Shell como Root]
+```
 
 
 ## 🔭 Reconocimiento
