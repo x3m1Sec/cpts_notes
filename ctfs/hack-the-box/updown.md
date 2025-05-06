@@ -1,11 +1,10 @@
 
+![image](https://github.com/user-attachments/assets/b1487d6a-86c6-46d0-9c10-3688187e9fc1)
 
-![[Pasted image 20250505092824.png]]
 
-
-**Publicado:** 05 de Mayo de 2025 
-**Autor:** José Miguel Romero aka x3m1Sec 
-**Dificultad:** ⭐ Medium
+**Publicado:** 05 de Mayo de 2025   
+**Autor:** José Miguel Romero aka x3m1Sec   
+**Dificultad:** ⭐ Medium  
 
 ## 📝 Descripción
 
@@ -81,7 +80,8 @@ Nmap done: 1 IP address (1 host up) scanned in 8.78 seconds
 ```
 
 
-![[Pasted image 20250505093635.png]]
+![image](https://github.com/user-attachments/assets/cc6054cc-d359-47d8-a140-182a46062487)
+
 
 <div align="center">
 
@@ -107,7 +107,8 @@ http://www.google.es; whoami
 324234234 || ls
 ```
 
-![[Pasted image 20250505121124.png]]
+![image](https://github.com/user-attachments/assets/087bbc6b-5f5b-409d-b950-6cca48ea4aa3)
+
 #### 🕷️ Fuzzing de vhosts
 
 ```
@@ -115,7 +116,9 @@ ffuf -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt:FUZZ -u http://
 ```
 
 
-![[Pasted image 20250505104335.png]]
+![image](https://github.com/user-attachments/assets/568da222-ecd4-4030-9d76-ea25ab4273b3)
+
+
 
 
  ⚠️   Debemos agregar este dominio a nuestro archivo hosts.
@@ -127,7 +130,8 @@ echo "10.10.11.177 dev.siteisup.htb" | sudo tee -a /etc/hosts
 ## 🌐 Enumeración Web
 
 A continuación verificamos que no tenemos permiso para acceder a este recurso.
-![[Pasted image 20250505104504.png]]
+![image](https://github.com/user-attachments/assets/1ab93905-907d-4f30-98da-7f3c18561e6d)
+
 
 
 Realizamos fuzzing de directorios usando feroxbuster
@@ -138,7 +142,8 @@ feroxbuster -u http://siteisup.htb -r  -w /usr/share/seclists/Discovery/Web-Cont
 
 Encontramos un directorio .git:
 
-![[Pasted image 20250505110516.png]]
+![image](https://github.com/user-attachments/assets/399e6bf6-805d-4237-ab5d-284200eeb809)
+
 
 
 A continuación usamos la herramienta git dumper para facilitar la revisión del repositorio de código.
@@ -149,10 +154,12 @@ git_dumper http://siteisup.htb/dev git-dump
 
 
 Una vez descargado el código, en el fichero changelog encontramos información que podría ser interesante:
-![[Pasted image 20250505111146.png]]
+![image](https://github.com/user-attachments/assets/c438f18a-1dba-4751-8345-85068c35a4dc)
+
 
 También hay un parámetro especial "only4dev" que se puede enviar e la cabecera de la petición
-![[Pasted image 20250505112025.png]]
+![image](https://github.com/user-attachments/assets/df196ea0-fe8b-4420-abdd-1f913f3225f9)
+
 
 A continuación, hacemos una petición a http://dev.siteisup.htb interceptando con Burp y probamos a añadir este parámetro en la cabecera
 
@@ -162,33 +169,40 @@ only4dev
 ```
 
 
-![[Pasted image 20250505113345.png]]
+![image](https://github.com/user-attachments/assets/5da60e99-9bf5-49e9-b525-a90b0cd00809)
+
 
 
 Podemos usar también la extensión para firefox https://addons.mozilla.org/es-ES/firefox/addon/simple-modify-header/:
 
-![[Pasted image 20250505114920.png]]
+![image](https://github.com/user-attachments/assets/5015951b-2db9-4eda-bab4-ba7548a5b3a5)
+
 Al hacer esto descubrimos un enlace al panel de administrador y un botón para la subida de archivos.
 
-![[Pasted image 20250505115030.png]]
+![image](https://github.com/user-attachments/assets/5c411c0e-432e-49d1-8cc2-f8f9c04021f8)
+
 
 En lo que respecta al enlace del panel de administrador, vemos que somos redirigidos a:
 
 http://dev.siteisup.htb/?page=admin
 
-![[Pasted image 20250505115048.png]]
+![image](https://github.com/user-attachments/assets/828c8fc9-1480-4f21-9a1d-8b9c5835bb6a)
+
 
 Echando un vistazo al código fuente de esta sección vemos qué parámetro se acepta en la petición que nos permite apuntar a un recurso aunque se están aplicando ciertos filtros para evitar un posible LFI:
 
-![[Pasted image 20250505114459.png]]
+![image](https://github.com/user-attachments/assets/3405c8b8-d709-41de-85b9-4323d4df8ced)
+
 
 
 Respecto al botón para la subida de archivos:
-![[Pasted image 20250505115123.png]]
+![image](https://github.com/user-attachments/assets/44d76fcc-6877-417b-a6e2-73ea75717d48)
+
 
 Si revisamos el código fuente anteriormente descargado del repositorio .git en checker.php:
 
-![[Pasted image 20250505113939.png]]
+![image](https://github.com/user-attachments/assets/a7a4e9b1-bed5-48d1-a574-89e5d5d514a5)
+
 
 Podemos ver las extensiones para la carga de archivos que están permitidas. También podemos ver que se crea un directorio en  uploads/ obteniendo el timestamp de la hora de la subida y aplicado posteriormente la codificación en md5.
 
@@ -196,7 +210,8 @@ También es importante verifica que el archivo se borra una vez después de subi
 
 Comprobamos que el directorio /uploads está vacío: 
 
-![[Pasted image 20250505115114.png]]
+![image](https://github.com/user-attachments/assets/20ac5f23-ead3-4841-a3ca-923918b7a01f)
+
 Vamos a intentar subir un archivo php con alguna extensión que permita saltarnos la restricción de extensión, por ejemplo usando la webshell de pentestmonkey y renombándola con extensión .phar:
 
 ```
@@ -205,11 +220,13 @@ mv php-reverse-shell.php shell.phar
 ```
 
 Verificamos que el fichero se ha subido correctamente y tal como habíamos analizado previamente en el código, sea ha creado un directorio con el timestamp de la fecha codificado en MD5:
-![[Pasted image 20250505115430.png]]
+![image](https://github.com/user-attachments/assets/f2de992b-6efe-4232-b562-06145fc02b6c)
+
 
 El problema, es que el enlace al archivo se está borrando después de subirse.
 
-![[Pasted image 20250505115622.png]]
+![image](https://github.com/user-attachments/assets/ac3e864a-93a8-453d-a035-790cab504c10)
+
 
 ## 💉 Explotación
 
@@ -235,14 +252,16 @@ zip test.pwned info.php
 
 Subimos el archivo.
 
-![[Pasted image 20250505125139.png]]
+![image](https://github.com/user-attachments/assets/fa0f33f9-977c-4f73-a8ec-5e113a31fbcd)
+
 
 
 Usamos el wrapper php en la url con el paámetro page para llamar a nuestra shell
 
  ⚠️   No Debemos agregar la extensión php a nuestro archivo ya que recordemos que tal como vimos en el código fuente se le está concatenando al final.
  
-![[Pasted image 20250505124416.png]]
+![image](https://github.com/user-attachments/assets/1e82ed31-5d11-4fef-902b-fa208b71e621)
+
 
 
 ```
@@ -251,7 +270,8 @@ http://dev.siteisup.htb/?page=phar://uploads/92b4ba864769f5ab9b0708c96412332a/te
 
 A continuación verificamos las disable_functions:
 
-![[Pasted image 20250505125631.png]]
+![image](https://github.com/user-attachments/assets/de932a93-b576-473a-8999-dcfcd970ac27)
+
 
 Para verificar qué función podemos usar, podemos utilizar la herramienta dfunc-bypasser a la cual podemos pasarle una url con el php.info y te indica de qué función de sistema php puedes abusar para ejecutar comandos:
 
@@ -260,13 +280,15 @@ https://github.com/teambi0s/dfunc-bypasser
 Podemos usar la herramienta con el parámetro --file especificando el arhivo info.php. Para ello podemos interceptar la petición con burp y en la respuesta renderizada hacer un copy to file:
 
 
-![[Pasted image 20250505131200.png]]
+![image](https://github.com/user-attachments/assets/30b4dcdc-bc7d-4be2-b205-e952c08ba8cf)
+
 
 ```
 dfunc_bypasser --file info.php 
 ```
 
-![[Pasted image 20250505131319.png]]
+![image](https://github.com/user-attachments/assets/9c926934-9389-49fa-8618-b1bd8d6ab636)
+
 
 La herramienta nos indica que podemos usar proc_open. Para ver cómo usar esta función podemos hacer uso de la documentación oficial:
 
@@ -315,13 +337,15 @@ zip revshell.test shell.php
 
 Tras subirla, iniciamos un listener en el puerto que hayamos especificado volvemos a hacer uso del wrapper para llamarla:
 
-![[Pasted image 20250505131859.png]]
+![image](https://github.com/user-attachments/assets/87eea073-eebd-4678-b3c7-31a71c56f538)
+
 
 ```
 http://dev.siteisup.htb/?page=phar://uploads/64fbd80378990182b061d4ceca662019/revshell.test/shell
 ```
 
-![[Pasted image 20250505131955.png]]
+![image](https://github.com/user-attachments/assets/7e461168-3b98-460c-a282-5312b0569e54)
+
 
 
 Tras ganar acceso, hacemos un full tty de nuestra shell:
@@ -331,7 +355,8 @@ SHELL=/bin/bash script -q /dev/null
 
 Encontramos un script en python sobre el que el usuario www-data tiene permisos de lectura y ejecución:
 
-![[Pasted image 20250505132815.png]]
+![image](https://github.com/user-attachments/assets/6a27cd81-fd38-4824-92c2-9ccbee0a48a7)
+
 
 
 El script parece que toma la entrada del usuario sin sanitizarla. Podemos abusar de esto pasándo el siguiente parámetro a la función y escalar a developer:
@@ -341,15 +366,18 @@ __import__('os').system('/bin/bash')
 ```
 
 
-![[Pasted image 20250505133340.png]]
+![image](https://github.com/user-attachments/assets/fb4ef046-2274-46e0-9150-26e079a5b1ed)
+
 
 Seguimos sin tener permisos para leer la flag de /home/developer:
 
-![[Pasted image 20250505133511.png]]
+![image](https://github.com/user-attachments/assets/c2a8d91a-8979-46b0-966d-6c6999ac7a02)
+
 
 Dado que sí tenemos permisos para leer el directorio .ssh, vamos a usar la clave ssh para conectarnos:
 
-![[Pasted image 20250505133607.png]]
+![image](https://github.com/user-attachments/assets/71e8d822-8228-4e52-8f6f-94d1cbbd1545)
+
 
 ```
 chmod 600 id_rsa_developer
@@ -366,15 +394,18 @@ developer@updown:~$ cat user.txt
 
 Verificamos posibles archivos que  puede ejecutar developer como root:
 
-![[Pasted image 20250505133904.png]]
+![image](https://github.com/user-attachments/assets/6a162272-7275-4579-9e52-1efa09d8d5fb)
+
 
 Encontramos información sobre este binario y posibles formas de explotación en gtfobins:
 
 https://gtfobins.github.io/gtfobins/easy_install/#sudo
 
-![[Pasted image 20250505134559.png]]
+![image](https://github.com/user-attachments/assets/12fb8e81-db7a-4b44-8f2d-0c16ba664351)
 
-![[Pasted image 20250505134612.png]]
+
+![image](https://github.com/user-attachments/assets/cd241ec2-9af5-445f-ae3a-d083471c8fb3)
+
 
 ```
 # cd /root

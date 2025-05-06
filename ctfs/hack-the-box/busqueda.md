@@ -1,5 +1,5 @@
+![image](https://github.com/user-attachments/assets/f24695ac-7874-4789-b110-047cf685d88e)
 
-![](assets/Pasted%20image%2020250504113659.png)
 
 
 
@@ -26,7 +26,16 @@ Esta máquina Linux explota una vulnerabilidad de ejecución de código arbitrar
 
 ## 🚀 Metodología
 
-![Metodología](https://github.com/user-attachments/assets/83b58bf5-4eab-499b-9cc0-c3825190acfa)
+```mermaid
+graph TD
+    A[Reconocimiento] --> B[Enumeración Web]
+    B --> C[Descubrimiento de Searchor v2.4.0]
+    C --> D[Explotación de Eval]
+    D --> E[Reverse Shell como svc]
+    E --> F[Descubrimiento de Credenciales Git]
+    F --> G[Escalada mediante System-Checkup.py]
+    G --> H[Shell como Root]
+```
 
 ---
 
@@ -97,7 +106,8 @@ echo "10.10.11.208 searcher.htb" | sudo tee -a /etc/hosts
 
 Al acceder a la web, descubrimos un motor de búsqueda unificado que genera URLs de consulta para varios motores de búsqueda.
 
-![](assets/Pasted%20image%2020250504114108.png)
+![image](https://github.com/user-attachments/assets/7022da34-9d74-4356-a2cb-f6c8b9b74f58)
+
 
 Realizando fuzzing de vhosts descrubirmos un vhost llamado gitea que añadimos también a nuestro fichero /etc/hosts
 
@@ -106,7 +116,8 @@ ffuf -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt:FUZZ -u http://
 ```
 
 
-![](assets/Pasted%20image%2020250503112323.png)
+![image](https://github.com/user-attachments/assets/0042177c-426e-4d8d-9725-26e40f58c176)
+
 
 ```bash
 echo "10.10.11.208 gitea.searcher.htb" | sudo tee -a /etc/hosts
@@ -118,7 +129,8 @@ En el pie de página, se revela que la aplicación usa **Searchor v2.4.0**. Una 
 
 https://github.com/nikn0laty/Exploit-for-Searchor-2.4.0-Arbitrary-CMD-Injection
 
-![](assets/Pasted%20image%2020250504114337.png)
+![image](https://github.com/user-attachments/assets/64416970-fe86-4db0-95aa-2521655146a4)
+
 
 El problema radica en el uso inseguro de la función `eval()` de Python.
 
@@ -158,7 +170,8 @@ Ejecutamos el exploit indicando la URL del objetivo y nuestra IP y puerto del ho
 ```
 
 
-![](assets/Pasted%20image%2020250503115515.png)
+![image](https://github.com/user-attachments/assets/201b7e01-69f0-42ed-a0bb-302d58ea3be1)
+
 
 Esto mismo se podría hacer también usando el siguiente payload interceptando la petición con la herramienta Burp Suite:
 
@@ -247,9 +260,9 @@ User svc may run the following commands on busqueda:
 
 Descubrimos que el usuario svc no tiene permisos de escritura ni lectura pero podemos ejecutar `system-checkup.py` como root:
 
-![[Pasted image 20250503123807.png]]
+![image](https://github.com/user-attachments/assets/c4a690e2-a804-4ae2-9a8c-29a6c8da5499)
 
-![](assets/Pasted%20image%2020250503123807.png)
+
 
 ```bash
 svc@busqueda:~$ sudo /usr/bin/python3 /opt/scripts/system-checkup.py *
@@ -266,7 +279,8 @@ Uso del parámetro **docker-ps** del script `system-checkup.py`
 sudo /usr/bin/python3 /opt/scripts/system-checkup.py docker-ps
 ```
 
-![](assets/Pasted%20image%2020250503124327.png)
+![image](https://github.com/user-attachments/assets/a1526231-8243-464a-b5fe-d56996240825)
+
 
 Uso del parámetro **docker-inspect** del script `system-checkup.py`
 
@@ -274,7 +288,8 @@ Uso del parámetro **docker-inspect** del script `system-checkup.py`
 sudo /usr/bin/python3 /opt/scripts/system-checkup.py docker-inspect
 ```
 
-![](assets/Pasted%20image%2020250503124405.png)
+![image](https://github.com/user-attachments/assets/ab726bbe-8361-4a32-ba8e-f0ec0bd15ae4)
+
 
 
 Podemos obtener más información sobre el parámetro `<format>`en la siguiente documentación de docker
@@ -321,12 +336,14 @@ sudo /usr/bin/python3 /opt/scripts/system-checkup.py docker-inspect '{{json .}}'
 
 Esta contraseña nos permite autenticarnos en el vhost http://gitea.searcher.htb como usuario Administrator y acceder al repositorio de script, pudiendo de esta forma analizar su contenido:
 
-![](assets/Pasted%20image%2020250504111131.png)
+![image](https://github.com/user-attachments/assets/bfec47ba-260a-45a3-8875-aa9a0f97d13c)
+
 
 Al revisar el script comprobamos que si pasamos como argumento la opción "full-checkup" ejecuta el script ./full-checkup.sh:
 
 
-![](assets/Pasted%20image%2020250503123628.png)
+![image](https://github.com/user-attachments/assets/cc28b884-de85-43c7-bcfd-ee709e97886f)
+
 
 ### Explotación del script
 
@@ -356,7 +373,8 @@ Por útimo, lanzamos de nuevo el script desde el directorio /tmp para que abusan
 sudo /usr/bin/python3 /opt/scripts/system-checkup.py full-checkup
 ```
 
-![](assets/Pasted%20image%2020250504120405.png)
+![image](https://github.com/user-attachments/assets/613abf0b-1352-4275-b23c-0981cb0a3f53)
+
 
 
 ### Flag de root

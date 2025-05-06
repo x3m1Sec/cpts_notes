@@ -1,13 +1,34 @@
-![[Pasted image 20250505185553.png]]
+![image](https://github.com/user-attachments/assets/4bdbbff3-e8d8-4e89-98a7-a9284334fc4f)
 
-**Publicado:** 06 de Mayo de 2025 
-**Autor:** José Miguel Romero aka x3m1Sec 
-**Dificultad:** ⭐ Fácil
+
+**Publicado:** 06 de Mayo de 2025   
+**Autor:** José Miguel Romero aka x3m1Sec   
+**Dificultad:** ⭐ Fácil  
 
 ## 📝 Descripción
 
+Help" es una máquina Linux de dificultad fácil en HackTheBox que presenta una aplicación web vulnerable de mesa de ayuda (HelpDeskZ) y una API GraphQL. La explotación implica múltiples vectores: enumeración web, extracción de credenciales a través de GraphQL, explotación de SQLi en la aplicación web para obtener más credenciales, y finalmente una escalada de privilegios aprovechando una vulnerabilidad en el kernel de Linux.
+
+La máquina es particularmente útil para practicar técnicas de reconocimiento web, manipulación de APIs GraphQL, explotación de SQL Injection y escalada de privilegios mediante vulnerabilidades de kernel.
 
 ## 🚀 Metodología
+```mermaid
+graph TD
+    A[Reconocimiento] --> B[Escaneo: Puertos 22, 80, 3000]
+    B --> C[Puerto 80: HelpDeskZ v1.0.2]
+    B --> D[Puerto 3000: GraphQL API]
+    D --> E[Explotación GraphQL]
+    E --> F[Obtención credenciales: helpme:Welcome1]
+    C --> G[Enumeración HelpDeskZ]
+    G --> H[Descubrimiento vulnerabilidad SQLi]
+    H --> I[Explotación SQLi]
+    I --> J[Obtención credenciales: help:Welcome1]
+    J --> K[Acceso SSH como usuario help]
+    K --> L[Enumeración sistema]
+    L --> M[Kernel vulnerable: 4.4.0-116]
+    M --> N[Explotación CVE-2017-16995]
+    N --> O[Shell como Root]
+```
 
 
 ## 🔭 Reconocimiento
@@ -75,17 +96,18 @@ echo "10.10.10.121 help.htb" | sudo tee -a /etc/hosts
 ## 🌐 Enumeración Web
 
 El servicio HTTP del puerto 80 muestra un sitio web con apache en construcción sin nada interesante:
-![[Pasted image 20250505190216.png]]
-#### Fuzzing de vhosts
+![image](https://github.com/user-attachments/assets/602696e1-1ba9-4286-a47d-890deefbaf51)
 
-Realizando fuzzing de vhosts 
+
+### Fuzzing de vhosts
 
 ```
 ffuf -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt:FUZZ -u http://help.htb -H 'Host:FUZZ.help.htb' -fc 302
 ```
 
 No encontramos nada relevante.
-#### Fuzzing de directorios
+
+### Fuzzing de directorios
 
 Realizando fuzzing de directorios descubrimos un directorio llamado /support
 
@@ -93,7 +115,8 @@ Realizando fuzzing de directorios descubrimos un directorio llamado /support
 feroxbuster -u http://help.htb -r  -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt --scan-dir-listings -C 403,404
 ```
 
-![[Pasted image 20250505190453.png]]
+![image](https://github.com/user-attachments/assets/6a9d0e13-820c-4a14-bc29-91bf66e8a5cc)
+
 
 El sitio web está usando un servicio llamado HelpDeskZ aunque no sabemos a priori la versión.
 
@@ -105,18 +128,21 @@ Este fichero parece indicar entre cosas la versión. Veamos si podemos enumerar 
 
 http://help.htb/support/UPGRADING.txt
 
-![[Pasted image 20250505192559.png]]
+![image](https://github.com/user-attachments/assets/7dfb0e4b-c841-42a1-907e-385d4221aa0a)
+
 
 
 Verificamos que es la versión 1.0.2 y esta versión es vulnerable a Arbitrary File Upload y a authenticated sql injection:
 
 https://www.exploit-db.com/exploits/40300
 
-![[Pasted image 20250505192641.png]]
+![image](https://github.com/user-attachments/assets/f71861fa-9a4d-4656-bcf9-7e96222f7ef5)
+
 
 https://www.exploit-db.com/exploits/41200
 
-![[Pasted image 20250505192831.png]]
+![image](https://github.com/user-attachments/assets/62624d1f-a9f8-4ef6-b9a7-01d3d20adbc6)
+
 
 
 
@@ -124,9 +150,10 @@ Encontramos una sección que permite enviar tickets rellenando una serie de camp
 
 
 
-Al acceder al puerto 3000 encontramos que el servicio nos devuelve un JSON indicando lo siguiente:
+Al acceder al puerto 3000 encontramos que el servicio nos devuelve un JSON indicando el siguiente mensaje:
 
-![[Pasted image 20250505193007.png]]
+![image](https://github.com/user-attachments/assets/fe9cc150-0bba-4e94-b8c4-09e07eead28f)
+
 
 ```
 |message|"Hi Shiv, To get access please find the credentials with given query"|
@@ -135,12 +162,16 @@ Al acceder al puerto 3000 encontramos que el servicio nos devuelve un JSON indic
 
 En la pestaña "Headers" vemos que en la respuesta está especificando que se está empleando Express. 
 
-![[Pasted image 20250505193152.png]]Googleando sobre «Express js query language» nos encontramos con resultados relacionados con GraphQL.
+![image](https://github.com/user-attachments/assets/3ebe8c61-1bb4-4756-bda0-b42817b8e27c)
+
+
+Googleando sobre «Express js query language» nos encontramos con resultados relacionados con GraphQL.
 
 Al navegar al recurso /graphql nos indica que falta por especificar un parámetro de tipo GET en la solicitud:
 
 
-![[Pasted image 20250505193348.png]]
+![image](https://github.com/user-attachments/assets/a66ceb2d-5227-4016-80fb-75e58f69d3a7)
+
 
 A continuación intentamos consultar información. Un endpoint graphql toma objetos como entrada. Como necesitamos información relacionada con un usuario vamos a probar con un objeto usuario. Usamos jq para formatear la salida a JSON
 
@@ -148,7 +179,8 @@ A continuación intentamos consultar información. Un endpoint graphql toma obje
 curl -s -G http://10.10.10.121:3000/graphql --data-urlencode "query={user}" | jq
 ```
 
-![[Pasted image 20250505193743.png]]
+![image](https://github.com/user-attachments/assets/0a5b3cb8-b77c-4057-abf7-54a97b366dd5)
+
 
 La respuesta nos indica que parece que la petición espera que se especifiquen subcampos. Probamos por ejemplo con el campo username o usernames:
 
@@ -156,7 +188,8 @@ La respuesta nos indica que parece que la petición espera que se especifiquen s
 curl -s -G http://help.htb:3000/graphql --data-urlencode 'query={user {username} }' | jq
 ```
 
-![[Pasted image 20250505193849.png]]
+![image](https://github.com/user-attachments/assets/df469459-e262-4c5c-a38e-3c930e84a7cc)
+
 
 Encontramos un usuario, ahora podemos ir más allá e intentar también obtener el campo contraseña a ver si existe:
 
@@ -165,25 +198,30 @@ Encontramos un usuario, ahora podemos ir más allá e intentar también obtener 
 jq
 ```
 
-![[Pasted image 20250505193952.png]]
+![image](https://github.com/user-attachments/assets/23785dff-606d-41c2-b062-dcf3e8616c59)
 
-![[Pasted image 20250505194131.png]]
+
+![image](https://github.com/user-attachments/assets/96e45ad4-2f5b-4d10-a08e-a4205bb7f3cd)
+
+
 Parece que el campo contraseña es un hash MD5. Usamos hashcat para intentar crackearlo:
 
 ```
 hashcat -m 0 hash_helpme /usr/share/wordlists/rockyou.txt    
 ```
 
-![[Pasted image 20250505194145.png]]
+![image](https://github.com/user-attachments/assets/12935b76-4ed9-4e9e-99c0-80d122047f45)
 
 
 Probamos estas credenciales en el panel de login anterior  y logramos acceder:
 
-![[Pasted image 20250505194348.png]]
+![image](https://github.com/user-attachments/assets/3f67585f-8b23-4754-84f9-65864daf2ae2)
+
 
 Anteriormente cuando enumeramos la versión de este software vimos que podía ser vulnerable a Arbitrary File Upload y Authenticated SQLi.
 
-![[Pasted image 20250505194752.png]]
+![image](https://github.com/user-attachments/assets/1572a035-7e64-4953-bc62-550808641e52)
+
 
 
 ```
@@ -194,7 +232,8 @@ El exploit no me funcionó con esta máquina, pero tras revisar  el contenido pu
 
 Lo primero que se requiere es crear un ticket adjuntando un archivo:
 
-![[Pasted image 20250505195838.png]]
+![image](https://github.com/user-attachments/assets/034f5bce-e25f-4589-92e8-19b6e18c72b0)
+
 
 
 A continuación, copiamos la url del adjunto en el navegador e interceptamos la petición con burp:
@@ -207,7 +246,8 @@ Probamos añadiendo una inyección muy sencilla y confirmamos la vulnerabilidad:
 ```
 and 1=1-- - 
 ```
-![[Pasted image 20250505200108.png]]
+![image](https://github.com/user-attachments/assets/a9459036-ec8e-4819-913c-fe565d48fe5f)
+
 
 Enviando esto resulta en una condición verdadera que devuelve la imagen pero cambiándolo a 1=2 no lo hace porque se evalúa a falso. Esto confirma la vulnerabilidad SQLi.
 
@@ -223,7 +263,8 @@ Hay bastantes tablas por lo que una vez localizamos la que nos interesa lanzamos
 sqlmap -r req -D support -T staff --threads 10 --dump --batch
 ```
 
-![[Pasted image 20250505202111.png]]
+![image](https://github.com/user-attachments/assets/1576dddd-e7ff-4cca-ad49-45d9e991a813)
+
 
 Obtenemos la contraseña de la cuenta Administrator: Welcome1
 
@@ -233,7 +274,8 @@ Estas credenciales no funcionarion en el panel de /support de helpdesz. Tampoco 
 ssh help@10.10.10.121
 ```
 
-![[Pasted image 20250505202728.png]]
+![image](https://github.com/user-attachments/assets/0003d950-afd6-47d2-8abe-ae78e90b59cb)
+
 
 ```
 help@help:/home$ cd help
@@ -255,10 +297,12 @@ Sorry, user help may not run sudo on help.
 ```
 
 Al enumerar la versión del kernel parece que es una versión vulnerable:
-![[Pasted image 20250505203846.png]]
+![image](https://github.com/user-attachments/assets/0c2d2d45-c320-463d-8054-46b215d482f6)
+
 https://www.exploit-db.com/exploits/44298
 
-![[Pasted image 20250505203853.png]]
+![image](https://github.com/user-attachments/assets/1be3b3c3-4268-4de9-9439-152960b93834)
+
 
 Creamos un fichero en el directorio /tmp de la máquina objetivo con el nombre exploit.c y el contenido del exploit
 ```c
