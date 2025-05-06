@@ -71,6 +71,7 @@
     * [File Transfers](pentest-notes/utilities-scripts-and-payloads/file-transfers.md)
     * [Pivoting, Tunneling, Port Forwarding](pentest-notes/utilities-scripts-and-payloads/pivoting-tunneling-port-forwarding.md)
     * [Password Attacks](pentest-notes/utilities-scripts-and-payloads/password-attacks.md)
+    * [Spawn TTY Shells](pentest-notes/utilities-scripts-and-payloads/spawn_tty_shell.md)
 * [🎮 CTFs](ctfs/README.md)
   * [🟩 Hack The Box](ctfs/hack-the-box/README.md)
     * [Busqueda](ctfs/hack-the-box/busqueda.md)
