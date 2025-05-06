@@ -40,7 +40,7 @@ The CPTS certification validates the following key skills:
 ## Preparation Resources
 
 ### Official Resources
-- [HTB Academy CPTS Path](https://academy.hackthebox.com/path/certifications/penetration-tester)
+- [HTB Academy CPTS Path](https://academy.hackthebox.com/preview/certifications/htb-certified-penetration-testing-specialist/)
 - HTB Pro Labs (Offshore, Dante, APTLabs, etc.)
 - HTB Enterprise Labs
 
@@ -73,13 +73,10 @@ _This section will be updated after completing the certification._
 
 ### Study Plan
 - Complete relevant HTB Academy modules
-- Practice with recommended Pro Labs
+- Practice with recommended Pro Labs and Ippsec list
 - Focus on improving Active Directory attack skills
 - Enhance web application testing methodology
 - Develop efficient documentation process
 
 ### Exam Experience
-_Pending certification_
-
-### Lessons Learned
 _Pending certification_
