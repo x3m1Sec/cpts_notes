@@ -26,7 +26,16 @@ Esta máquina Linux explota una vulnerabilidad de ejecución de código arbitrar
 
 ## 🚀 Metodología
 
-![Metodología](https://github.com/user-attachments/assets/83b58bf5-4eab-499b-9cc0-c3825190acfa)
+```mermaid
+graph TD
+    A[Reconocimiento] --> B[Enumeración Web]
+    B --> C[Descubrimiento de Searchor v2.4.0]
+    C --> D[Explotación de Eval]
+    D --> E[Reverse Shell como svc]
+    E --> F[Descubrimiento de Credenciales Git]
+    F --> G[Escalada mediante System-Checkup.py]
+    G --> H[Shell como Root]
+```
 
 ---
 
