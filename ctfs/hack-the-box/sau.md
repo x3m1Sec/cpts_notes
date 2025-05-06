@@ -31,6 +31,7 @@ flowchart TD
     L --> M[Captura de flags]
 ```
 
+
 ## 🔭 Reconocimiento
 
 ### Ping para verificación en base a TTL
