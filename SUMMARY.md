@@ -81,6 +81,7 @@
     * [Broker](ctfs/hack-the-box/broker.md)
     * [Monitored](ctfs/hack-the-box/monitored.md)
     * [Sea](ctfs/hack-the-box/sea.md)
+    * [Nibbles](ctfs/hack-the-box/nibbles.md)
   * [🔴 TryHackMe](ctfs/tryhackme/README.md)
 * [🎓 My Certifications](my-certifications/README.md)
   * [eJPTv2](my-certifications/ejptv2/README.md)
