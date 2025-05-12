@@ -4,9 +4,9 @@
 
 
 
-**Publicado:** 12 de Mayo de 2025 
-**Autor:** José Miguel Romero aKa **x3m1Sec** 
-**Dificultad:** ⭐ Easy
+**Publicado:** 12 de Mayo de 2025   
+**Autor:** José Miguel Romero aKa **x3m1Sec**   
+**Dificultad:** ⭐ Easy  
 
 
 ## 📝 Descripción
