@@ -1,9 +1,9 @@
 
 ![image](https://github.com/user-attachments/assets/5e60069a-314f-4ea3-b6dd-586e28d604ff)
 
-**Publicado:** 12 de Mayo de 2025 
-**Autor:** José Miguel Romero aKa **x3m1Sec** 
-**Dificultad:** ⭐ Easy
+**Publicado:** 12 de Mayo de 2025   
+**Autor:** José Miguel Romero aKa **x3m1Sec**   
+**Dificultad:** ⭐ Easy  
 
 ## 📝 Descripción
 
