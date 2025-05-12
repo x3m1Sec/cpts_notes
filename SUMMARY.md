@@ -80,6 +80,7 @@
     * [Updown](ctfs/hack-the-box/updown.md)
     * [Broker](ctfs/hack-the-box/broker.md)
     * [Monitored](ctfs/hack-the-box/monitored.md)
+    * [Sea](ctfs/hack-the-box/sea.md)
   * [🔴 TryHackMe](ctfs/tryhackme/README.md)
 * [🎓 My Certifications](my-certifications/README.md)
   * [eJPTv2](my-certifications/ejptv2/README.md)
