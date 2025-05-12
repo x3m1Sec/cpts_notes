@@ -115,13 +115,16 @@ Al acceder a este recurso no vemos gran cosa, aunque buscando algo de informaci�
 
 
 Revisando el código fuente en github hay varios ficheros que nos pueden aportar información sobre la versión:
+
 https://github.com/dignajar/nibbleblog
+
 ![image](https://github.com/user-attachments/assets/b1a2b298-6742-4022-945d-5a18b4a65ef8)
 
 
 Gracias al fichero README enumeramos la versión(4.0.3)
 
 http://10.10.10.75/nibbleblog/README
+
 ![image](https://github.com/user-attachments/assets/db0d82d3-d388-4151-b7d1-277bc5e0ee84)
 
 
