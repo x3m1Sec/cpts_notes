@@ -91,4 +91,5 @@
   * [OSCP](my-certifications/OSCP/README.md)
     * [OSCP Preparation](my-certifications/OSCP/oscp-preparation.md)
     * [Cheatsheets](my-certifications/OSCP/cheatsheets.md)
+    * [Machine List](https://www.notion.so/OSCP-Machine-List-1f3e6083c26b809883c4f9bd1fef4770)
 
