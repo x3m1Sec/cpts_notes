@@ -132,7 +132,7 @@ sudo 7z a OSCP-OS-XXXXX-Exam-Report.7z OSCP-OS-XXXXX-Exam-Report.pdf
 md5sum OSCP-OS-XXXXX-Exam-Report.7z
 ```
 
-## **🎯 Results**  
+## **Results**  
 
 You will receive your results via email within 10 business days.
 
@@ -141,3 +141,8 @@ For technical issues during the exam, contact:
 Live Chat: https://chat.offsec.com
 
 Email: help@offsec.com
+
+## **🎯 Machines List**  
+
+https://docs.google.com/spreadsheets/u/1/d/1dwSMIAPIam0PuRBkCiDI88pU3yzrqqHkDtBngUHNCw8/htmlview?pli=1#
+https://docs.google.com/spreadsheets/u/0/d/18weuz_Eeynr6sXFQ87Cd5F0slOj9Z6rt/htmlview#
