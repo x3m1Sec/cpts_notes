@@ -84,7 +84,7 @@
     * [Nibbles](ctfs/hack-the-box/nibbles.md)
   * [🔴 TryHackMe](ctfs/tryhackme/README.md)
 * [🎓 My Certifications](my-certifications/README.md)
-  * [eJPTv2](my-certifications/ejptv2/README.md)
+  * [eJPTv2](my-certifications/eJPT/README.md)
     * [My review](my-certifications/eJPT/ejptv2.md)
   * [CPTS](my-certifications/CPTS/README.md)
     * [CheatSheet](my-certifications/CPTS/cheatsheet.md)
