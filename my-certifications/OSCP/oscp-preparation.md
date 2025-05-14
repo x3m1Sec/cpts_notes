@@ -130,6 +130,7 @@ From the panel, you can:
 ```bash
 sudo 7z a OSCP-OS-XXXXX-Exam-Report.7z OSCP-OS-XXXXX-Exam-Report.pdf
 md5sum OSCP-OS-XXXXX-Exam-Report.7z
+```
 
 ## **🎯 Results**  
 
