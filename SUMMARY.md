@@ -88,3 +88,7 @@
     * [My review](my-certifications/eJPT/ejptv2.md)
   * [CPTS](my-certifications/CPTS/README.md)
     * [CheatSheet](my-certifications/CPTS/cheatsheet.md)
+  * [OSCP](my-certifications/OSCP/README.md)
+    * [OSCP Preparation](my-certifications/OSCP/oscp-preparation.md)
+    * [Cheatsheets](my-certifications/OSCP/cheatsheets.md)
+
